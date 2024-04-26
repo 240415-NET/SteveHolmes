@@ -86,7 +86,7 @@ public class GroceryManager
         Console.Write("How many? ");
         int Quantity = NumberFromUser();
 
-        ShoppingList.AddGroceryItem(new GroceryItem(ItemName, Quantity));
+        ShoppingList.AddGroceryItem(ItemName, Quantity);
         DisplayShoppingList();
     }   
 

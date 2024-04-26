@@ -8,6 +8,10 @@ public class GroceryList
 {
     private List<GroceryItem> ShoppingList = new();
 
+    public void AddGroceryItem(string ItemName, int Quantity)
+    {
+        AddGroceryItem(new GroceryItem(ItemName, Quantity));
+    }
     
     public void AddGroceryItem(GroceryItem item)
     {
