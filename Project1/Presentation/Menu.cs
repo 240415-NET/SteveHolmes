@@ -77,7 +77,7 @@ public class Menu
                     UserController.CreateUser(userInput);
                     validInput = true;
                 }
-            } while (!validInput); 
+            } while (!validInput);
     }
 
     public static void UserLoginMenu() 

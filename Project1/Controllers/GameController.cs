@@ -22,11 +22,14 @@ public class GameController
     {
         List<Game> gamesList = SavedGames();
         List<string> gamesListing = new();
-        foreach (Game each in gamesList)
+
+        for (int i = gamesList.Count() - 1; i >= 0; i--)
         {
+            Game each = gamesList.ElementAt(i);
             string userName = UserController.FindUser(each.userId).userName;
-            gamesListing.Add($"{userName.PadRight(20)}{each}");
+            gamesListing.Add($"{userName,-16} {DateTimeString(each.startTime)}    {DateTimeString(each.endTime)}          {each.winLossDraw}");
         }
+
         return gamesListing;
     }
 
@@ -35,10 +38,19 @@ public class GameController
         List<string> gamesListing = new();
         var gamesToDisplay = SavedGames().Where( x => x.userId == user.userId);
 
-        foreach (Game each in gamesToDisplay)
-            gamesListing.Add($"{DateTimeString(each.startTime)}    {DateTimeString(each.endTime)}          {each.winLossDraw}");
-    
+        for (int i = gamesToDisplay.Count() - 1; i >= 0; i--)
+        {
+            Game each = gamesToDisplay.ElementAt(i);
+            string endTimeDisplay = each.isInProgress() ? "In Progress                 " : DateTimeString(each.endTime);
+            gamesListing.Add($"{DateTimeString(each.startTime)}    {endTimeDisplay}          {each.winLossDraw}");
+        }
+
         return gamesListing;
+    }
+
+    public static void ClearGameHistory(User user)
+    {
+        _gameData.RemoveGames(user.userId);
     }
 
     public static DateTime DateAndTimeNow()

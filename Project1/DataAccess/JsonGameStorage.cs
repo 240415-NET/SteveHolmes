@@ -15,8 +15,8 @@ public class JsonGameStorage : IGameStorageRepo
             string existingGamesJson = File.ReadAllText(filePath);
             List<Game> existingGamesList = JsonSerializer.Deserialize<List<Game>>(existingGamesJson);
             existingGamesList.Add(game);
-            string jsonExistingGamesListString = JsonSerializer.Serialize(existingGamesList);
-            File.WriteAllText(filePath, jsonExistingGamesListString);
+            string jsonUpdatedGamesListString = JsonSerializer.Serialize(existingGamesList);
+            File.WriteAllText(filePath, jsonUpdatedGamesListString);
         }
         else if (!File.Exists(filePath)) // initially the file will not exist
         {
@@ -42,4 +42,18 @@ public class JsonGameStorage : IGameStorageRepo
         return gamesList;
     }    
     
+    public void RemoveGames(Guid userId)
+    {
+        List<Game> allGames = new List<Game>();
+
+        if (File.Exists(filePath))
+        {
+            string existingGamesJson = File.ReadAllText(filePath);
+            allGames = JsonSerializer.Deserialize<List<Game>>(existingGamesJson);
+            allGames.RemoveAll(each => each.userId == userId);
+
+            string jsonUpdatedGamesListString = JsonSerializer.Serialize(allGames);
+            File.WriteAllText(filePath, jsonUpdatedGamesListString);
+        }
+    }
 }

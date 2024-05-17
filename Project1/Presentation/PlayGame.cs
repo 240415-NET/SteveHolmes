@@ -13,7 +13,7 @@ public class PlayGame
         PlayGameController.StartGame(user, game);
 
         // placeholder for game playing user interaction
-        Console.WriteLine("\n\nFor now, let's just pretend that we have played a game.\n\n");
+        Console.WriteLine("\nFor now, let's just pretend that we have started to play a game.\n");
 
     }
 
