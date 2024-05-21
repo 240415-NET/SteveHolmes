@@ -91,6 +91,11 @@ public class Game
         board[n] = 'X';
     }
 
+    public void SystemSelectsPosition(int n)
+    {
+        board[n] = 'O';
+    }
+
     public void RecordUserWin()
     {
         winLossDraw = 'W';

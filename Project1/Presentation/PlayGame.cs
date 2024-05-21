@@ -31,6 +31,7 @@ public class PlayGame
                 {
                     shouldSaveGame = true;
                     isValidInput = true;
+                    Console.Write("Current game is being saved. ");
                 }
                 else if (userPlay < 0 || userPlay > 9)
                 {
@@ -43,15 +44,14 @@ public class PlayGame
             {
                 PlayGameController.UserSelectsPosition(game, userPlay - 1);
                 hasGameFinished = PlayGameController.HasGameFinished(game);
+                if (!hasGameFinished)
+                    {
+                        SystemPlay(user, game);
+                        hasGameFinished = PlayGameController.HasGameFinished(game);
+                    }
             }
 
         } while (!hasGameFinished && !shouldSaveGame);
-
-        Console.WriteLine($"UserPlay = {userPlay}");
-        string finished = hasGameFinished ? "true" : "false";
-        string shouldSave = shouldSaveGame ? "true" : "false";
-        Console.WriteLine($"hasGameFinished = {finished}");
-        Console.WriteLine($"shouldSaveGame = {shouldSave}");
 
         if (!shouldSaveGame)
         {
@@ -95,5 +95,15 @@ public class PlayGame
 
     }
 
+    public static void SystemPlay(User user, Game game)
+    {
+        DisplayGameBoard(user, game);
+        Console.Write("\nPlease wait. System is deciding next play...");
+        Thread.Sleep(3000);
+        int nextPlay = game.FirstAvailablePosition();
+        if (nextPlay >= 0)
+            game.SystemSelectsPosition(nextPlay);
+        
+    }
 
 }

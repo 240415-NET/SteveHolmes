@@ -13,6 +13,12 @@ public class GameController
         _gameData.StoreGame(game);
     }
 
+    public static void UpdateGame(Game game)
+    {
+        _gameData.RemoveGames(game.userId, game.gameId);
+        _gameData.StoreGame(game);
+    }
+
     public static List<Game> SavedGames()    // retrieve a list of all games
     {
         return _gameData.RetrieveGames();
@@ -48,6 +54,29 @@ public class GameController
         return gamesListing;
     }
 
+    public static List<string> ScoreboardText()
+    {
+        List<string> scoreboardListing = new();
+
+        var gamesToDisplay = SavedGames().Where( x => !x.isInProgress());
+        var sortedGames = gamesToDisplay.OrderByDescending( e => e.startTime);
+        var userIds = sortedGames.Select( x => x.userId);
+        var distinctUserIds = userIds.Distinct();
+
+        foreach (Guid eachUserId in distinctUserIds)
+        {
+            int wins = sortedGames.Count(x => x.userId == eachUserId && x.winLossDraw == 'W');
+            int losses = sortedGames.Count(x => x.userId == eachUserId && x.winLossDraw == 'L');
+            int draws = sortedGames.Count(x => x.userId == eachUserId && x.winLossDraw == 'D');
+
+            Game mostRecentGame = sortedGames.First(x => x.userId == eachUserId);
+            string userName = UserController.FindUser(eachUserId).userName;
+            scoreboardListing.Add($"{userName,-16} {DateTimeString(mostRecentGame.endTime)}      {wins,3}     {losses,3}    {draws,3}");
+        }
+        return scoreboardListing;
+    }
+
+
     public static List<string> NumberedGamesInProgress(User user)
     {   
         List<string> gamesListing = new();
@@ -79,15 +108,9 @@ public class GameController
 
     public static DateTime DateAndTimeNow()
     {
-        // get current date & time (utc)
         DateTime dtmUtc = DateTime.UtcNow;
-
-        // need local time zone; assuming eastern time
         TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-
-        // apply time zone to get local date & time
         DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(dtmUtc, easternTimeZone);
-
         return easternTime;
     }
 
@@ -95,4 +118,5 @@ public class GameController
     {
         return $"{dtm.ToShortDateString(),-10}{dtm.DayOfWeek.ToString().Trim(),-10}{dtm.ToShortTimeString(),-8}";
     }
+
 }

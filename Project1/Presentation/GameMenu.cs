@@ -77,21 +77,24 @@ public class GameMenu
     }
 
     public static void StartGame(User user)
+    // entry point for a new game
     {
         Game newGame = new Game(user);
         StartGame(user, newGame);
+        GameController.SaveGame(newGame);
     }
 
     public static void StartGame(User user, int gameNumber)
+    // entry point for an existing game
     {
         Game existingGame = GameController.NumberedGameAt(user, gameNumber);
         StartGame(user, existingGame);
+        GameController.UpdateGame(existingGame);
     }
 
     public static void StartGame(User user, Game game)
     {
         PlayGame.Play(user, game);
-        GameController.SaveGame(game);
 
         HitAnyKeyToContinue();
         Console.Clear();
@@ -132,6 +135,7 @@ public class GameMenu
         else foreach (string each in gamesListing)
             Console.WriteLine(each);        
 
+        Console.WriteLine("\n"); // some additional spacing    
         HitAnyKeyToContinue();
         Console.Clear();
     }    
@@ -169,15 +173,16 @@ public class GameMenu
     {
         Console.Clear();
         Console.WriteLine($"\nNOUGHTS AND CROSSES - SCOREBOARD\n");
-        Console.WriteLine("Player           Start Date/Time                 End Date/Time                   Win/Loss/Draw");
-        Console.WriteLine("------           ---------------                 -------------                   -------------");
+        Console.WriteLine("Player           End Date/Time                    Wins  Losses  Draws");
+        Console.WriteLine("--------------   -----------------------------    ----  ------  -----");
  
-        List<string> gamesListing = GameController.AllGamesAsText();
+        List<string> gamesListing = GameController.ScoreboardText();
         if (gamesListing.Count == 0)
             Console.WriteLine("\nThe scoreboard currently has no entries.\n");
         else foreach (string each in gamesListing)
             Console.WriteLine(each);        
-            
+
+        Console.WriteLine("\n"); // some additional spacing    
         HitAnyKeyToContinue();
         Console.Clear();
     }

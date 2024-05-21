@@ -42,6 +42,21 @@ public class JsonGameStorage : IGameStorageRepo
         return gamesList;
     }    
     
+    public void RemoveGames(Guid userId, Guid gameId)
+    {
+        List<Game> allGames = new List<Game>();
+
+        if (File.Exists(filePath))
+        {
+            string existingGamesJson = File.ReadAllText(filePath);
+            allGames = JsonSerializer.Deserialize<List<Game>>(existingGamesJson);
+            allGames.RemoveAll(each => each.userId == userId && each.gameId == gameId);
+
+            string jsonUpdatedGamesListString = JsonSerializer.Serialize(allGames);
+            File.WriteAllText(filePath, jsonUpdatedGamesListString);
+        }
+    }
+
     public void RemoveGames(Guid userId)
     {
         List<Game> allGames = new List<Game>();
