@@ -2,7 +2,6 @@ namespace NoughtsAndCrosses.Models;
 
 public class Game
 {
-
     public Guid gameId { get; set; }
     public Guid userId { get; set; }
     public char[] board { get; set; }
@@ -10,35 +9,32 @@ public class Game
     public DateTime endTime { get; set; }
     public char winLossDraw { get; set; }
 
-    public Game() { }
+    public Game() {} 
 
     public Game(User user)
     {
         gameId = Guid.NewGuid();
         userId = user.userId;
         board = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        startTime = DateTime.MinValue;
-        endTime = DateTime.MinValue;
+        startTime = MinimumSqlDateTime();
+        endTime = MinimumSqlDateTime();
         winLossDraw = ' ';
     }
 
-    // public Game(char[] _board, bool _isInProgress, DateTime _startTime)
-    // {
-    //     gameId = Guid.NewGuid(); 
-    //     board = _board;
-    //     startTime = _startTime;      
-    //     endTime = DateTime.MinValue;
-    //     winLossDraw = 'X';
-    // }   
+    public static DateTime MinimumSqlDateTime()
+    {
+        return DateTime.Parse("1/1/1753 12:00:00 AM");  // the earliest date supported by SQL Server.
+    }
 
     public bool isInProgress()
     {
-        return endTime == DateTime.MinValue;
+        return endTime == MinimumSqlDateTime();
     }
 
     public override string ToString()
     {
-        return $"{startTime} {endTime} {winLossDraw}";
+        string boardString = new string(board);
+        return $"{gameId} {userId} {boardString} {startTime} {endTime} {winLossDraw}";
     }
 
     public bool WasGameWonBy(char playerLetter)
@@ -110,7 +106,5 @@ public class Game
     {
         winLossDraw = 'D';
     }
-
-
 
 }

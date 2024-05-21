@@ -6,7 +6,7 @@ namespace NoughtsAndCrosses.Controllers;
 public class GameController
 {
 
-    private static IGameStorageRepo _gameData = new JsonGameStorage();
+    private static IGameStorageRepo _gameData = new SqlGameStorage();
 
     public static void SaveGame(Game game)   // store a single game
     {
@@ -21,7 +21,7 @@ public class GameController
 
     public static List<Game> SavedGames()    // retrieve a list of all games
     {
-        return _gameData.RetrieveGames();
+       return _gameData.RetrieveGames();
     }
 
     public static List<string> AllGamesAsText()
@@ -42,13 +42,13 @@ public class GameController
     public static List<string> AllGamesAsText(User user)
     {   
         List<string> gamesListing = new();
-        var gamesToDisplay = SavedGames().Where( x => x.userId == user.userId);
+        var gamesToDisplay = SavedGames().Where(x => x.userId == user.userId);
+        var sortedGames = gamesToDisplay.OrderByDescending(e => e.startTime);
 
-        for (int i = gamesToDisplay.Count() - 1; i >= 0; i--)
+        foreach (Game eachGame in sortedGames)
         {
-            Game each = gamesToDisplay.ElementAt(i);
-            string endTimeDisplay = each.isInProgress() ? "In Progress                 " : DateTimeString(each.endTime);
-            gamesListing.Add($"{DateTimeString(each.startTime)}       {endTimeDisplay}             {each.winLossDraw}");
+            string endTimeDisplay = eachGame.isInProgress() ? "In Progress                 " : DateTimeString(eachGame.endTime);
+            gamesListing.Add($"{DateTimeString(eachGame.startTime)}       {endTimeDisplay}             {eachGame.winLossDraw}");
         }
 
         return gamesListing;
@@ -84,10 +84,9 @@ public class GameController
         var sortedGames = gamesToDisplay.OrderByDescending( e => e.startTime);
 
         int counter = 0;
-        foreach(Game eachGame in sortedGames)
-        {              
+        foreach(Game eachGame in sortedGames)                    
             gamesListing.Add($"{++counter}    {DateTimeString(eachGame.startTime)}");
-        }
+        
         return gamesListing;
     }
 

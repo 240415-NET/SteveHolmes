@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using NoughtsAndCrosses.Data;
 using NoughtsAndCrosses.Models;
 
@@ -6,7 +8,7 @@ namespace NoughtsAndCrosses.Controllers;
 public class UserController
 {
 
-    private static IUserStorageRepo _userData = new JsonUserStorage();
+    private static IUserStorageRepo _userData = new SqlUserStorage();
 
     public static void CreateUser(string userName)
         {

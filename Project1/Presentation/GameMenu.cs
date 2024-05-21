@@ -17,7 +17,6 @@ public class GameMenu
         Console.Clear();
         do
         {
- 
             Console.WriteLine($"Welcome {user.userName}.\n\nPlease select one of the following options:\n");
             Console.WriteLine("1. Start a new game");
             Console.WriteLine("2. Continue playing an earlier game");
@@ -25,7 +24,6 @@ public class GameMenu
             Console.WriteLine("4. Clear game history");
             Console.WriteLine("5. View the scoreboard");
             Console.WriteLine("6. Exit\n");
-
 
             try
             {
@@ -59,14 +57,12 @@ public class GameMenu
                         validInput = false;
                         break;
                 }
-
             }
             catch (Exception ex)
             {
                 validInput = false;
                 Console.Write("Please enter a number for option that you want to choose: ");
             }
-
         } while (!validInput || keepAlive);
     }
 
@@ -110,17 +106,20 @@ public class GameMenu
 
         List<string> gamesListing = GameController.NumberedGamesInProgress(user);
 
-        if (gamesListing.Count == 0)
-            Console.WriteLine("\nYou don't have any currently active games.\n\n");
-        else foreach (string each in gamesListing)
+        if (gamesListing.Count == 0) {
+            Console.WriteLine("\nYou don't currently have any active games.\n\n");
+            HitAnyKeyToContinue();
+            Console.Clear();
+            return;
+        }
+            
+        foreach (string each in gamesListing)
             Console.WriteLine(each);   
     
         Console.Write("\n\nEnter the number of a game to continue playing: ");
         int whichOne = Convert.ToInt32(Console.ReadLine());
         StartGame(user, whichOne - 1);
     }
-
-
 
     public static void ReviewGameHistory(User user)
     {
@@ -139,7 +138,6 @@ public class GameMenu
         HitAnyKeyToContinue();
         Console.Clear();
     }    
-
 
     public static void ClearGameHistory(User user)
     {

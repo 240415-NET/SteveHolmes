@@ -98,8 +98,12 @@ public class PlayGame
     public static void SystemPlay(User user, Game game)
     {
         DisplayGameBoard(user, game);
-        Console.Write("\nPlease wait. System is deciding next play...");
-        Thread.Sleep(3000);
+        Console.Write("\nPlease wait. System is deciding next play.");
+        Thread.Sleep(600); Console.Write(".");
+        Thread.Sleep(600); Console.Write(".");
+        Thread.Sleep(600); Console.Write(".");
+        Thread.Sleep(600); Console.Write(".");
+        Thread.Sleep(600); Console.Write(".");
         int nextPlay = game.FirstAvailablePosition();
         if (nextPlay >= 0)
             game.SystemSelectsPosition(nextPlay);
