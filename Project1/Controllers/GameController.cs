@@ -42,10 +42,34 @@ public class GameController
         {
             Game each = gamesToDisplay.ElementAt(i);
             string endTimeDisplay = each.isInProgress() ? "In Progress                 " : DateTimeString(each.endTime);
-            gamesListing.Add($"{DateTimeString(each.startTime)}    {endTimeDisplay}          {each.winLossDraw}");
+            gamesListing.Add($"{DateTimeString(each.startTime)}       {endTimeDisplay}             {each.winLossDraw}");
         }
 
         return gamesListing;
+    }
+
+    public static List<string> NumberedGamesInProgress(User user)
+    {   
+        List<string> gamesListing = new();
+        var gamesToDisplay = SavedGames().Where( x => x.userId == user.userId && x.isInProgress());
+        var sortedGames = gamesToDisplay.OrderByDescending( e => e.startTime);
+
+        int counter = 0;
+        foreach(Game eachGame in sortedGames)
+        {              
+            gamesListing.Add($"{++counter}    {DateTimeString(eachGame.startTime)}");
+        }
+        return gamesListing;
+    }
+
+    public static Game NumberedGameAt(User user, int gameNumber)
+    {   
+        List<string> gamesListing = new();
+        var gamesToDisplay = SavedGames().Where( x => x.userId == user.userId && x.isInProgress());
+        var sortedGames = gamesToDisplay.OrderByDescending( e => e.startTime);
+
+        Game game = sortedGames.ElementAt(gameNumber);
+        return game;
     }
 
     public static void ClearGameHistory(User user)

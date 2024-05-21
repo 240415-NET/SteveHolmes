@@ -20,7 +20,7 @@ public class GameMenu
  
             Console.WriteLine($"Welcome {user.userName}.\n\nPlease select one of the following options:\n");
             Console.WriteLine("1. Start a new game");
-            Console.WriteLine("2. Continue playing a previous game");
+            Console.WriteLine("2. Continue playing an earlier game");
             Console.WriteLine("3. Review game history");
             Console.WriteLine("4. Clear game history");
             Console.WriteLine("5. View the scoreboard");
@@ -36,12 +36,10 @@ public class GameMenu
                 switch (userChoice)
                 {
                     case 1: // start a new game
-                        StartNewGame(user);
+                        StartGame(user);
                         break;
                     case 2: // continue playing a previous game
-                        Console.WriteLine(">>>>>> Continue playing a previous game");
-                        HitAnyKeyToContinue();
-                        Console.Clear();
+                        ContinuePlayingAnEarlierGame(user);
                         break;
                     case 3: // review game history   
                         ReviewGameHistory(user);
@@ -78,30 +76,62 @@ public class GameMenu
         Console.ReadKey();
     }
 
-    public static void StartNewGame(User user)
+    public static void StartGame(User user)
     {
         Game newGame = new Game(user);
-        PlayGame.StartGame(user, newGame);
+        StartGame(user, newGame);
+    }
 
-        // at the end of the game we save it
+    public static void StartGame(User user, int gameNumber)
+    {
+        Game existingGame = GameController.NumberedGameAt(user, gameNumber);
+        StartGame(user, existingGame);
+    }
 
-        GameController.SaveGame(newGame);
-        
+    public static void StartGame(User user, Game game)
+    {
+        PlayGame.Play(user, game);
+        GameController.SaveGame(game);
+
         HitAnyKeyToContinue();
         Console.Clear();
+
     }
+
+    public static void ContinuePlayingAnEarlierGame(User user)
+    {
+        Console.Clear();
+        Console.WriteLine($"\nNOUGHTS AND CROSSES - Currently Active Games for {user.userName}\n");
+        Console.WriteLine("No   Start Date/Time                ");
+        Console.WriteLine("---- ------------------------------ ");
+
+        List<string> gamesListing = GameController.NumberedGamesInProgress(user);
+
+        if (gamesListing.Count == 0)
+            Console.WriteLine("\nYou don't have any currently active games.\n\n");
+        else foreach (string each in gamesListing)
+            Console.WriteLine(each);   
+    
+        Console.Write("\n\nEnter the number of a game to continue playing: ");
+        int whichOne = Convert.ToInt32(Console.ReadLine());
+        StartGame(user, whichOne - 1);
+    }
+
+
 
     public static void ReviewGameHistory(User user)
     {
         Console.Clear();
         Console.WriteLine($"\nNOUGHTS AND CROSSES - Game History for {user.userName}\n");
-        Console.WriteLine("Start Date/Time                 End Date/Time                   Win/Loss/Draw");
-        Console.WriteLine("---------------------------     ---------------------------     -------------");
+        Console.WriteLine("Start Date/Time                    End Date/Time                      Win/Loss/Draw");
+        Console.WriteLine("------------------------------     ------------------------------     -------------");
 
         List<string> gamesListing = GameController.AllGamesAsText(user);
-        foreach (string each in gamesListing)
-            Console.WriteLine(each);
-        
+        if (gamesListing.Count == 0)
+            Console.WriteLine("\nYou currently don't have any game history to display\n\n");
+        else foreach (string each in gamesListing)
+            Console.WriteLine(each);        
+
         HitAnyKeyToContinue();
         Console.Clear();
     }    
@@ -141,9 +171,12 @@ public class GameMenu
         Console.WriteLine($"\nNOUGHTS AND CROSSES - SCOREBOARD\n");
         Console.WriteLine("Player           Start Date/Time                 End Date/Time                   Win/Loss/Draw");
         Console.WriteLine("------           ---------------                 -------------                   -------------");
+ 
         List<string> gamesListing = GameController.AllGamesAsText();
-        foreach (string each in gamesListing)
-            Console.WriteLine(each);
+        if (gamesListing.Count == 0)
+            Console.WriteLine("\nThe scoreboard currently has no entries.\n");
+        else foreach (string each in gamesListing)
+            Console.WriteLine(each);        
             
         HitAnyKeyToContinue();
         Console.Clear();
