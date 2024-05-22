@@ -106,5 +106,4 @@ public class Game
     {
         winLossDraw = 'D';
     }
-
 }

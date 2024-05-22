@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Text;
 using NoughtsAndCrosses.Controllers;
 using NoughtsAndCrosses.Models;
 
@@ -43,22 +45,18 @@ public class Menu
                             validInput = false;
                             break;
                     }
-
                 }
                 catch (Exception ex) 
                 {   
                     validInput = false;
                     Console.WriteLine("Please enter a valid choice!");
                 }
-
             } while (!validInput);
     }
-
 
     public static void UserCreationMenu() 
     {
         bool validInput = true;
-        bool shouldProceedToGameMenu = false;
         string userInput = "";
 
         Console.Clear();
@@ -79,15 +77,13 @@ public class Menu
                     Console.WriteLine("Username already exists, please choose another.");
                     validInput = false;
                 }else{ 
-                    User newUser = UserController.CreateUser(userInput);
-                    GameMenu.Start(newUser);
-                    shouldProceedToGameMenu = true;
+                    string password = GetInitialPasswordFromUser();
                     validInput = true;
+
+                    User newUser = UserController.CreateUser(userInput, password);
+                    GameMenu.Start(newUser);
                 }
-            } while (!validInput);
-        
-    //    if (shouldProceedToGameMenu) 
-    //        GameMenu.Start(newUser);  //call game functionality menu
+            } while (!validInput);       
     }
 
     public static void UserLoginMenu() 
@@ -115,10 +111,98 @@ public class Menu
                 }else{ 
                     User existingUser = UserController.ReturnUser(userInput);
                     validInput = true;
-                    
-                    GameMenu.Start(existingUser);  //call game functionality menu
+
+                    if (!canUserEnterTheCorrectPassword(existingUser))
+                        return;
+                                           
+                    GameMenu.Start(existingUser); 
                 }
 
             } while (!validInput); 
+    }
+
+    public static string GetInitialPasswordFromUser()
+    {
+        string password1 = "";
+        string password2 = "";
+        bool passwordsMatch = false;
+
+        while (!passwordsMatch)
+        {
+            Console.Write("Please enter the password that you want to use: ");
+            password1 = GetPasswordFromUser();
+            Console.Write("Now re-enter the same password as verification: ");
+            password2 = GetPasswordFromUser();
+            passwordsMatch = password1 == password2;
+            if (!passwordsMatch)
+                Console.WriteLine("\nThe passwords do not match. Let's try this again.\n");
+        }
+
+        return password1;
+    }
+
+    public static string GetPasswordFromUser()
+    //
+    // allow the user to enter a string without it appearing on the screen.
+    // we assume that the calling code has already prompted for entry.
+    //
+    {
+        StringBuilder password = new StringBuilder();
+        string maskCharacter = "*";
+
+        while (true)
+        {
+            int x = Console.CursorLeft;
+            int y = Console.CursorTop;
+
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            if (keyPress.Key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine();
+                    break;
+                }
+            if (keyPress.Key == ConsoleKey.Backspace && password.Length > 0)  // handle backspace
+                {
+                    password.Remove(password.Length - 1, 1);    // remove last character from input
+                    Console.SetCursorPosition(x - 1, y);        // move cursor left by one character
+                    Console.Write(" ");                         // replace whatever is there by a space
+                    Console.SetCursorPosition(x - 1, y);        // move cursor left by one character
+                }
+            else if (keyPress.Key < ConsoleKey.Spacebar || keyPress.KeyChar > '~')
+                {
+                    // ignore the key press if the character is outside the normal ascii range,
+                    // if it's less than a space or greater than a tilde.
+                }
+            else
+                {
+                    password.Append(keyPress.KeyChar);
+                    Console.Write(maskCharacter);
+                }
+        }
+        return password.ToString();
+    }    
+
+    public static bool canUserEnterTheCorrectPassword(User user)
+    {
+        string password = "";
+        bool passwordIsCorrect = false;
+        int availableAttempts = 3;
+
+        Console.Write("Enter password: ");
+        while (!passwordIsCorrect && availableAttempts > 0)
+        {
+            password = GetPasswordFromUser();
+            passwordIsCorrect = UserController.IsUserPasswordCorrect(user, password);
+            if (!passwordIsCorrect)
+            {
+                Console.Write("Incorrect Password. Try again: ");   
+                availableAttempts--;
+            }
+        }
+        if (!passwordIsCorrect)
+            {
+                Console.WriteLine("\n\nToo many attempts. Access is denied.\n");
+            }
+        return passwordIsCorrect;
     }
 }

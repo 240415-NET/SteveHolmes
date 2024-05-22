@@ -12,13 +12,14 @@ public class SqlUserStorage : IUserStorageRepo
         using SqlConnection connection = new SqlConnection(connectionString);
         connection.Open();
 
-        string cmdText = @"INSERT INTO dbo.Users (userId, userName)
-                            VALUES (@userId, @userName);";
+        string cmdText = @"INSERT INTO dbo.Users (userId, userName, userPassword)
+                            VALUES (@userId, @userName, @userPassword);";
 
         using SqlCommand cmd = new SqlCommand(cmdText, connection);
 
         cmd.Parameters.AddWithValue("@userId", user.userId);
         cmd.Parameters.AddWithValue("@userName", user.userName);
+        cmd.Parameters.AddWithValue("@userPassword", user.userPassword);
 
         cmd.ExecuteNonQuery();
         connection.Close();
@@ -34,7 +35,7 @@ public class SqlUserStorage : IUserStorageRepo
         {
             connection.Open();
 
-            string cmdText = @"SELECT userId, userName 
+            string cmdText = @"SELECT userId, userName, userPassword 
                                 FROM dbo.Users
                                 WHERE userName=@userToFind;";
 
@@ -48,6 +49,7 @@ public class SqlUserStorage : IUserStorageRepo
             {
                 foundUser.userId = reader.GetGuid(0);
                 foundUser.userName = reader.GetString(1);
+                foundUser.userPassword = reader.GetString(2);
             }           
  
             connection.Close();
@@ -59,10 +61,13 @@ public class SqlUserStorage : IUserStorageRepo
 
             return foundUser;
 
-        }catch(Exception e)
+        }
+        catch(Exception e)
         {
             Console.WriteLine(e.Message);
-        }finally 
+            Console.WriteLine(e.StackTrace);
+        }
+        finally 
         { 
             connection.Close();
         }
@@ -79,7 +84,7 @@ public class SqlUserStorage : IUserStorageRepo
         {
             connection.Open();
 
-            string cmdText = @"SELECT userId, userName 
+            string cmdText = @"SELECT userId, userName, userPassword 
                                 FROM dbo.Users
                                 WHERE userId=@userIdToFind;";
 
@@ -93,6 +98,7 @@ public class SqlUserStorage : IUserStorageRepo
             {
                 foundUser.userId = reader.GetGuid(0);
                 foundUser.userName = reader.GetString(1);
+                foundUser.userPassword = reader.GetString(2);
             }           
  
             connection.Close();
@@ -104,16 +110,17 @@ public class SqlUserStorage : IUserStorageRepo
 
             return foundUser;
 
-        }catch(Exception e)
+        }
+        catch(Exception e)
         {
             Console.WriteLine(e.Message);
-        }finally 
+            Console.WriteLine(e.StackTrace);
+        }
+        finally 
         { 
             connection.Close();
         }
-
         return null;
     }
-
 }
 

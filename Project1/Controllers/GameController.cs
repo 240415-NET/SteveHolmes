@@ -8,7 +8,7 @@ public class GameController
 
     private static IGameStorageRepo _gameData = new SqlGameStorage();
 
-    public static void SaveGame(Game game)   // store a single game
+    public static void SaveGame(Game game) 
     {
         _gameData.StoreGame(game);
     }
@@ -19,7 +19,7 @@ public class GameController
         _gameData.StoreGame(game);
     }
 
-    public static List<Game> SavedGames()    // retrieve a list of all games
+    public static List<Game> SavedGames() 
     {
        return _gameData.RetrieveGames();
     }
@@ -59,7 +59,7 @@ public class GameController
         List<string> scoreboardListing = new();
 
         var gamesToDisplay = SavedGames().Where( x => !x.isInProgress());
-        var sortedGames = gamesToDisplay.OrderByDescending( e => e.startTime);
+        var sortedGames = gamesToDisplay.OrderByDescending( e => e.endTime);
         var userIds = sortedGames.Select( x => x.userId);
         var distinctUserIds = userIds.Distinct();
 

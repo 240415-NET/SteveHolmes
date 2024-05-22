@@ -39,7 +39,7 @@ public class PlayGame
                     isValidInput = false;
                 }
                 isValidInput = true;
-                
+
             } while (!isValidInput);
 
             if (!shouldSaveGame)
@@ -82,7 +82,6 @@ public class PlayGame
                 Console.WriteLine("\n\nBetter luck next time. It was a draw!");
                 PlayGameController.RecordUserDraw(game);
             }
-
     }
 
     public static void DisplayGameBoard(User user, Game game)
@@ -94,7 +93,6 @@ public class PlayGame
             Console.WriteLine($"\t{each}");
 
         Console.WriteLine();
-
     }
 
     public static void SystemPlay(User user, Game game)
@@ -107,8 +105,6 @@ public class PlayGame
         // system "plays" by taking the next available position, if there is one
         int nextPlay = game.FirstAvailablePosition();
         if (nextPlay >= 0)
-            game.SystemSelectsPosition(nextPlay);
-        
+            game.SystemSelectsPosition(nextPlay);       
     }
-
 }

@@ -20,7 +20,7 @@ public class GameMenu
             if (validInput)
             {
                 Console.Clear();
-                Console.WriteLine($"\nWelcome to NOUGHTS AND CROSSES\n");
+                Console.WriteLine($"\nYou are playing NOUGHTS AND CROSSES\n");
                 Console.WriteLine($"Hello {user.userName}. Please select one of the following options:\n");
                 Console.WriteLine("1. Start a new game");
                 Console.WriteLine("2. Continue playing an earlier game");
@@ -87,7 +87,7 @@ public class GameMenu
     }
 
     public static void StartGame(User user, int gameNumber)
-    // entry point for an existing game
+    // entry point to continue playing an existing game
     {
         Game existingGame = GameController.NumberedGameAt(user, gameNumber);
         StartGame(user, existingGame);
@@ -100,7 +100,6 @@ public class GameMenu
 
         HitAnyKeyToContinue();
         Console.Clear();
-
     }
 
     public static void ContinuePlayingAnEarlierGame(User user)
@@ -151,7 +150,7 @@ public class GameMenu
         else foreach (string each in gamesListing)
             Console.WriteLine(each);        
 
-        Console.WriteLine("\n"); // some additional spacing    
+        Console.WriteLine("\n"); 
         HitAnyKeyToContinue();
         Console.Clear();
     }    
@@ -197,7 +196,7 @@ public class GameMenu
         else foreach (string each in gamesListing)
             Console.WriteLine(each);        
 
-        Console.WriteLine("\n"); // some additional spacing    
+        Console.WriteLine("\n"); 
         HitAnyKeyToContinue();
         Console.Clear();
     }
@@ -209,5 +208,4 @@ public class GameMenu
         Console.WriteLine($"\nThank you, {user.userName}, for playing.\n");
         Console.WriteLine($"Come back soon!\n");
     }
-
 }

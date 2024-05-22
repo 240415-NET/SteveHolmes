@@ -79,6 +79,7 @@ public class SqlGameStorage : IGameStorageRepo
         }
         catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             Console.WriteLine(e.StackTrace);
         }
         finally
@@ -110,6 +111,7 @@ public class SqlGameStorage : IGameStorageRepo
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            Console.WriteLine(e.StackTrace);
         }
         finally
         {
@@ -138,13 +140,11 @@ public class SqlGameStorage : IGameStorageRepo
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            Console.WriteLine(e.StackTrace);
         }
         finally
         {
             connection.Close();
         }
-
-
     }
-
 }

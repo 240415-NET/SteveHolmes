@@ -5,13 +5,12 @@ namespace NoughtsAndCrosses.Controllers;
 
 public class PlayGameController
 {
-
     public static void RegisterStartOfGame(User user, Game game)
     {
-       // game.startTime = GameController.DateAndTimeNow();
        if (game.startTime == Game.MinimumSqlDateTime())
             game.startTime = GameController.DateAndTimeNow();
     }
+
     public static void RegisterEndOfGame(User user, Game game)
     {
         game.endTime = GameController.DateAndTimeNow();
@@ -79,6 +78,5 @@ public class PlayGameController
     {
         game.RecordUserDraw();
     }
-
 
 } 
