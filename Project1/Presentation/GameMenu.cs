@@ -32,7 +32,7 @@ public class GameMenu
 
             try
             {
-                Console.Write(": ");
+                if (validInput) Console.Write(": ");
                 userChoice = GameController.NumberFromUser();
                 validInput = true;
 
@@ -206,7 +206,7 @@ public class GameMenu
     {
         Console.Clear();
         Console.WriteLine("\nNOUGHTS AND CROSSES");
-        Console.WriteLine($"\nThank you {user.userName} for playing.\n");
+        Console.WriteLine($"\nThank you, {user.userName}, for playing.\n");
         Console.WriteLine($"Come back soon!\n");
     }
 

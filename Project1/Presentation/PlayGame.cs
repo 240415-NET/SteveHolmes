@@ -25,19 +25,21 @@ public class PlayGame
             Console.Write("\nEnter the number for the box you want to play (or 0 to save the game for later): ");
             do
             {
-                userPlay = Convert.ToInt32(Console.ReadLine());
+                userPlay = GameController.NumberFromUser();
 
                 if (userPlay == 0)
                 {
                     shouldSaveGame = true;
                     isValidInput = true;
-                    Console.Write("Current game is being saved. ");
+                    Console.Write("\nCurrent game is being saved.\n");
                 }
                 else if (userPlay < 0 || userPlay > 9)
                 {
-                    Console.WriteLine("Invalid entry. Enter a number for the box you want to choose.");
+                    Console.Write("Invalid entry. Enter a number for the box you want to choose: ");
                     isValidInput = false;
                 }
+                isValidInput = true;
+                
             } while (!isValidInput);
 
             if (!shouldSaveGame)

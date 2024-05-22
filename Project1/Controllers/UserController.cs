@@ -10,10 +10,11 @@ public class UserController
 
     private static IUserStorageRepo _userData = new SqlUserStorage();
 
-    public static void CreateUser(string userName)
+    public static User CreateUser(string userName)
         {
             User newUser = new User(userName);
             _userData.StoreUser(newUser);
+            return newUser;
         }
 
     public static bool UserExists(string userName)

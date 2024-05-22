@@ -58,10 +58,15 @@ public class Menu
     public static void UserCreationMenu() 
     {
         bool validInput = true;
+        bool shouldProceedToGameMenu = false;
         string userInput = "";
+
+        Console.Clear();
+        Console.WriteLine("\nNOUGHTS AND CROSSES - Create a New Account\n\n");
+
         do
             {   
-                Console.WriteLine("Please enter a username: ");
+                Console.Write("Please enter a username: ");
 
                 userInput = Console.ReadLine() ?? "";
                 userInput = userInput.Trim();
@@ -74,10 +79,15 @@ public class Menu
                     Console.WriteLine("Username already exists, please choose another.");
                     validInput = false;
                 }else{ 
-                    UserController.CreateUser(userInput);
+                    User newUser = UserController.CreateUser(userInput);
+                    GameMenu.Start(newUser);
+                    shouldProceedToGameMenu = true;
                     validInput = true;
                 }
             } while (!validInput);
+        
+    //    if (shouldProceedToGameMenu) 
+    //        GameMenu.Start(newUser);  //call game functionality menu
     }
 
     public static void UserLoginMenu() 
@@ -85,9 +95,11 @@ public class Menu
         bool validInput = true;
         string userInput = "";
 
+        Console.Clear();
+        Console.WriteLine("\nNOUGHTS AND CROSSES - Logging in with Existing Account\n\n");
         do
             {   
-                Console.WriteLine("Please enter a username: ");
+                Console.Write("Please enter your username: ");
 
                 userInput = Console.ReadLine() ?? "";
                 userInput = userInput.Trim();
@@ -107,6 +119,6 @@ public class Menu
                     GameMenu.Start(existingUser);  //call game functionality menu
                 }
 
-            } while (!validInput); //Continue running the above block UNTIL input is valid
+            } while (!validInput); 
     }
 }
