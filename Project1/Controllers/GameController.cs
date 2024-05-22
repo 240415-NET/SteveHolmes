@@ -118,4 +118,29 @@ public class GameController
         return $"{dtm.ToShortDateString(),-10}{dtm.DayOfWeek.ToString().Trim(),-10}{dtm.ToShortTimeString(),-8}";
     }
 
+    public static int NumberFromUser()
+    // prompt for and return a number from the user. ensure that we have a number to return.
+    {
+        int userNumber = 0;
+        bool userInputIsValid = true;
+        do
+        {
+            if (userInputIsValid == false)
+            {
+                Console.Write("Invalid Entry. Please enter a number: ");
+            }
+            string userString = Console.ReadLine();
+            userInputIsValid = true;
+            try
+            {
+                userNumber = Convert.ToInt32(userString);
+            }
+            catch (Exception e)
+            {
+                userInputIsValid = false;
+            }
+        }
+        while (userInputIsValid != true);
+        return userNumber;
+    }
 }

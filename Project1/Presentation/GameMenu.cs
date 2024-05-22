@@ -17,18 +17,23 @@ public class GameMenu
         Console.Clear();
         do
         {
-            Console.WriteLine($"Welcome {user.userName}.\n\nPlease select one of the following options:\n");
-            Console.WriteLine("1. Start a new game");
-            Console.WriteLine("2. Continue playing an earlier game");
-            Console.WriteLine("3. Review game history");
-            Console.WriteLine("4. Clear game history");
-            Console.WriteLine("5. View the scoreboard");
-            Console.WriteLine("6. Exit\n");
+            if (validInput)
+            {
+                Console.Clear();
+                Console.WriteLine($"\nWelcome to NOUGHTS AND CROSSES\n");
+                Console.WriteLine($"Hello {user.userName}. Please select one of the following options:\n");
+                Console.WriteLine("1. Start a new game");
+                Console.WriteLine("2. Continue playing an earlier game");
+                Console.WriteLine("3. Review game history");
+                Console.WriteLine("4. Clear game history");
+                Console.WriteLine("5. View the scoreboard");
+                Console.WriteLine("6. Exit\n");
+            }
 
             try
             {
                 Console.Write(": ");
-                userChoice = Convert.ToInt32(Console.ReadLine());
+                userChoice = GameController.NumberFromUser();
                 validInput = true;
 
                 switch (userChoice)
@@ -48,7 +53,8 @@ public class GameMenu
                     case 5: // view the scoreboard                     
                         ViewScoreboard();
                         break;
-                    case 6: //exit                     
+                    case 6: //exit 
+                        DisplayExitingMessage(user);                    
                         keepAlive = false;
                         break;
 
@@ -117,8 +123,19 @@ public class GameMenu
             Console.WriteLine(each);   
     
         Console.Write("\n\nEnter the number of a game to continue playing: ");
-        int whichOne = Convert.ToInt32(Console.ReadLine());
+        int whichOne = GameNumberFromUser(gamesListing.Count);
         StartGame(user, whichOne - 1);
+    }
+
+    public static int GameNumberFromUser(int numberOfGames)
+    {
+        int userEntry = GameController.NumberFromUser();
+        while (userEntry < 1 || userEntry > numberOfGames)
+        {
+            Console.Write("Invalid entry. Please select a game number: ");
+            userEntry = GameController.NumberFromUser();
+        }
+        return userEntry;
     }
 
     public static void ReviewGameHistory(User user)
@@ -183,6 +200,14 @@ public class GameMenu
         Console.WriteLine("\n"); // some additional spacing    
         HitAnyKeyToContinue();
         Console.Clear();
+    }
+
+    public static void DisplayExitingMessage(User user)
+    {
+        Console.Clear();
+        Console.WriteLine("\nNOUGHTS AND CROSSES");
+        Console.WriteLine($"\nThank you {user.userName} for playing.\n");
+        Console.WriteLine($"Come back soon!\n");
     }
 
 }

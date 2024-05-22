@@ -65,19 +65,19 @@ public class PlayGame
     {
        if (PlayGameController.DidUserWin(game)) 
             {
-                Console.WriteLine("Congratulations, You Win!");
+                Console.WriteLine("\n\nCongratulations, You Win!");
                 PlayGameController.RecordUserWin(game);
             }
 
         if (PlayGameController.DidUserLose(game))
             {   
-                Console.WriteLine("Commiserations, You Lose!");
+                Console.WriteLine("\n\nCommiserations, You Lose!");
                 PlayGameController.RecordUserLoss(game);
             }
 
         if (PlayGameController.DidUserDraw(game)) 
             {
-                Console.WriteLine("Better luck next time. It was a draw!");
+                Console.WriteLine("\n\nBetter luck next time. It was a draw!");
                 PlayGameController.RecordUserDraw(game);
             }
 
@@ -98,12 +98,11 @@ public class PlayGame
     public static void SystemPlay(User user, Game game)
     {
         DisplayGameBoard(user, game);
+
         Console.Write("\nPlease wait. System is deciding next play.");
-        Thread.Sleep(600); Console.Write(".");
-        Thread.Sleep(600); Console.Write(".");
-        Thread.Sleep(600); Console.Write(".");
-        Thread.Sleep(600); Console.Write(".");
-        Thread.Sleep(600); Console.Write(".");
+        for (int i=0; i<5; i++) {Thread.Sleep(500); Console.Write(".");}
+
+        // system "plays" by taking the next available position, if there is one
         int nextPlay = game.FirstAvailablePosition();
         if (nextPlay >= 0)
             game.SystemSelectsPosition(nextPlay);
