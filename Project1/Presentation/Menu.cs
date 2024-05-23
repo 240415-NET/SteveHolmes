@@ -72,11 +72,18 @@ public class Menu
                 {
                     Console.WriteLine("Username cannot be blank, please try again.");
                     validInput = false;
-                }else if(UserController.UserExists(userInput))
+                }
+                else if (userInput.Length > 20)
+                {
+                    Console.WriteLine("Username cannot be longer than 20 characters. Please try again.");
+                    validInput = false;
+                } 
+                else if(UserController.UserExists(userInput))
                 {
                     Console.WriteLine("Username already exists, please choose another.");
                     validInput = false;
-                }else{ 
+                }else
+                { 
                     string password = GetInitialPasswordFromUser();
                     validInput = true;
 
@@ -104,7 +111,8 @@ public class Menu
                 {
                     Console.WriteLine("Username cannot be blank, please try again.");
                     validInput = false;
-                }else if(!UserController.UserExists(userInput)) 
+                }
+                else if(!UserController.UserExists(userInput)) 
                 {
                     Console.WriteLine("Username doesn't exist, please choose another.");
                     validInput = false;

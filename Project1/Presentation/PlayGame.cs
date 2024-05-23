@@ -38,8 +38,10 @@ public class PlayGame
                     Console.Write("Invalid entry. Enter a number for the box you want to choose: ");
                     isValidInput = false;
                 }
-                isValidInput = true;
-
+                else
+                {
+                    isValidInput = true; // at this point we know that we have a valid input
+                }
             } while (!isValidInput);
 
             if (!shouldSaveGame)

@@ -187,8 +187,8 @@ public class GameMenu
     {
         Console.Clear();
         Console.WriteLine($"\nNOUGHTS AND CROSSES - SCOREBOARD\n");
-        Console.WriteLine("Player           End Date/Time                    Wins  Losses  Draws");
-        Console.WriteLine("--------------   -----------------------------    ----  ------  -----");
+        Console.WriteLine("Player                End Date/Time                    Wins  Losses  Draws");
+        Console.WriteLine("--------------------  -----------------------------    ----  ------  -----");
  
         List<string> gamesListing = GameController.ScoreboardText();
         if (gamesListing.Count == 0)

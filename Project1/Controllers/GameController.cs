@@ -71,7 +71,7 @@ public class GameController
 
             Game mostRecentGame = sortedGames.First(x => x.userId == eachUserId);
             string userName = UserController.FindUser(eachUserId).userName;
-            scoreboardListing.Add($"{userName,-16} {DateTimeString(mostRecentGame.endTime)}      {wins,3}     {losses,3}    {draws,3}");
+            scoreboardListing.Add($"{userName,-21} {DateTimeString(mostRecentGame.endTime)}      {wins,3}     {losses,3}    {draws,3}");
         }
         return scoreboardListing;
     }
@@ -93,8 +93,8 @@ public class GameController
     public static Game NumberedGameAt(User user, int gameNumber)
     {   
         List<string> gamesListing = new();
-        var gamesToDisplay = SavedGames().Where( x => x.userId == user.userId && x.isInProgress());
-        var sortedGames = gamesToDisplay.OrderByDescending( e => e.startTime);
+        var gamesToDisplay = SavedGames().Where(x => x.userId == user.userId && x.isInProgress());
+        var sortedGames = gamesToDisplay.OrderByDescending(e => e.startTime);
 
         Game game = sortedGames.ElementAt(gameNumber);
         return game;
