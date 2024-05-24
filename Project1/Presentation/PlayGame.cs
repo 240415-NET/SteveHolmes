@@ -38,6 +38,11 @@ public class PlayGame
                     Console.Write("Invalid entry. Enter a number for the box you want to choose: ");
                     isValidInput = false;
                 }
+                else if (!game.IsPositionAvailable(userPlay - 1))
+                {
+                    Console.Write("That position is already taken. Please try again: ");
+                    isValidInput = false;
+                }
                 else
                 {
                     isValidInput = true; // at this point we know that we have a valid input
