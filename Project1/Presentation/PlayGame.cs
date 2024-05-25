@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using NoughtsAndCrosses.Controllers;
 using NoughtsAndCrosses.Models;
 
@@ -97,8 +98,35 @@ public class PlayGame
         Console.WriteLine($"\nNOUGHTS AND CROSSES - {user.userName} is X, the system is O\n\n");
 
         foreach (string each in PlayGameController.DisplayableBoardRows(game))
-            Console.WriteLine($"\t{each}");
+            DisplayColorizedGameBoardRow($"\t{each}");
 
+        Console.WriteLine();
+    }
+
+    public static void DisplayColorizedGameBoardRow(string gameBoardRow)
+    {
+        foreach (char eachChar in gameBoardRow)
+        {
+            if (eachChar == 'X')
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(eachChar);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (eachChar == 'O')
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(eachChar);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else if (Char.IsDigit(eachChar))
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.Write(eachChar);
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            else Console.Write(eachChar);
+        }
         Console.WriteLine();
     }
 
